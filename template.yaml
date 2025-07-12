@@ -9,7 +9,7 @@ Resources:
     Properties:
       CodeUri: src/ # Lambdaのソースコードが入っているディレクトリ
       Handler: main.lambda_handler # 実行するハンドラ (ファイル名.関数名)
-      Runtime: python3.13.5
+      Runtime: python3.12
       Timeout: 30 # タイムアウトを30秒に設定 (必要に応じて変更)
       MemorySize: 256 # メモリを256MBに設定 (必要に応じて変更)
       Policies:
