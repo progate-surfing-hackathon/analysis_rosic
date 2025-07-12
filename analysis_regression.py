@@ -64,8 +64,8 @@ def evaluate_model(
 ) -> Tuple[np.ndarray, float, float]:
     """モデルを評価し、結果を返す"""
     coef = model.coef_
-    intercept = model.intercept_
-    r2_score = model.score(X, y)
+    intercept = float(model.intercept_)
+    r2_score = float(model.score(X, y))
     return coef, intercept, r2_score
 
 
