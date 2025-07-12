@@ -41,7 +41,7 @@ def evaluate_model(model, X, y):
 def predict_spending(model, temp, steps):
     """新しいデータで予測を行う"""
     new_data = pd.DataFrame([[temp, steps]], columns=["temp", "steps"])
-    return model.predict(new_data)[0]
+    return int(round(model.predict(new_data)[0]))
 
 
 def print_results(author, coef, intercept, r2_score, prediction):
@@ -54,7 +54,7 @@ def print_results(author, coef, intercept, r2_score, prediction):
     print(f"決定係数 (R^2): {r2_score:.3f}")
     print("回帰式:")
     print(f"飲料代 = {coef[0]:.2f} * 気温 + {coef[1]:.3f} * 歩数 + ({intercept:.2f})")
-    print(f"\n予測結果 (気温30℃、歩数8000歩): {prediction:.2f}円")
+    print(f"\n予測結果 (気温30℃、歩数8000歩): {prediction}円")
 
 
 def analyze_user(df, author):
@@ -71,12 +71,8 @@ def main():
     """メイン処理"""
     df = load_data("dummy_activity.csv")
     
-    authors = [
-        "Taro Yamada",
-        "Hanako Sato",
-        "Jiro Suzuki",
-        "Yoshiko Watanabe",
-    ]
+    # データベースからすべてのauthor名を取得
+    authors = df['author'].unique()
     
     for author in authors:
         analyze_user(df, author)
