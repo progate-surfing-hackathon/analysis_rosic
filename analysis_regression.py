@@ -1,11 +1,20 @@
+import os
+
 import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
+from sqlalchemy import create_engine
 
 
-def load_data(filename):
-    """データセットを読み込み、日付を変換する"""
-    df = pd.read_csv(filename)
+def load_data():
+    """MySQLデータベースからデータセットを読み込み、日付を変換する"""
+    load_dotenv()
+    db_url = os.environ["DB_URL"]
+    engine = create_engine(db_url)
+
+    query = "SELECT * FROM activity_data"
+    df = pd.read_sql(query, engine)
     df["created_at"] = pd.to_datetime(df["created_at"])
     df["date"] = df["created_at"].dt.date
     return df
@@ -13,18 +22,18 @@ def load_data(filename):
 
 def aggregate_daily_data(user_df):
     """毎時データを日ごとのデータに集約する"""
-    return user_df.groupby('date').agg({
-        'temp': 'mean',
-        'steps': 'last',
-        'paid_monney': 'last'
-    }).reset_index()
+    return (
+        user_df.groupby("date")
+        .agg({"temp": "mean", "steps": "last", "paid_monney": "last"})
+        .reset_index()
+    )
 
 
 def train_model(daily_df):
     """重回帰モデルを学習する"""
     X = daily_df[["temp", "steps"]]
     y = daily_df["paid_monney"]
-    
+
     model = LinearRegression()
     model.fit(X, y)
     return model, X, y
@@ -59,7 +68,7 @@ def print_results(author, coef, intercept, r2_score, prediction):
 
 def analyze_user(df, author):
     """ユーザーごとの分析を実行する"""
-    user_df = df[df['author'] == author].copy()
+    user_df = df[df["author"] == author].copy()
     daily_df = aggregate_daily_data(user_df)
     model, X, y = train_model(daily_df)
     coef, intercept, r2_score = evaluate_model(model, X, y)
@@ -69,11 +78,11 @@ def analyze_user(df, author):
 
 def main():
     """メイン処理"""
-    df = load_data("dummy_activity.csv")
-    
+    df = load_data()
+
     # データベースからすべてのauthor名を取得
-    authors = df['author'].unique()
-    
+    authors = df["author"].unique()
+
     for author in authors:
         analyze_user(df, author)
 

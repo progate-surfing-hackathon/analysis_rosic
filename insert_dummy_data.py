@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 load_dotenv()  # .envファイルから環境変数を読み込む
 
 # 環境変数からデータベース接続情報を取得
-db_url = os.getenv("DB_URL")
+db_url = os.environ["DB_URL"]
 
 # db_urlが設定されていない場合はエラーメッセージを表示して終了
 if not db_url:
@@ -37,7 +37,7 @@ except FileNotFoundError:
 # if_exists='append': テーブルが既に存在する場合、データを追加する
 # index=False: DataFrameのインデックスをDBのカラムとして保存しない
 try:
-    df.to_sql("activity", con=engine, if_exists="append", index=False)
+    df.to_sql("activity", con=engine, if_exists="replace", index=False)
     print("\n✅ データベースへのデータインサートが完了しました。")
 except Exception as e:
     print(f"\n❌ データベースへのインサート中にエラーが発生しました: {e}")
