@@ -2,26 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-# 1. サンプルデータの作成
-# 乱数のシードを固定
-np.random.seed(0)
-num_samples = 100
-
-# 説明変数
-temperature = np.random.uniform(20, 35, num_samples)  # 気温 (20-35℃)
-steps = np.random.uniform(3000, 15000, num_samples)  # 歩数 (3000-15000歩)
-
-# 目的変数（飲料代）
-# 飲料代 = 15 * 気温 + 0.02 * 歩数 - 150 + ノイズ
-beverage_spending = (
-    15 * temperature + 0.02 * steps - 150 + np.random.normal(0, 50, num_samples)
-)
-beverage_spending[beverage_spending < 0] = 0  # 0円未満にならないように調整
-
-# データフレームの作成
-df = pd.DataFrame(
-    {"Temperature": temperature, "Steps": steps, "Beverage_Spending": beverage_spending}
-)
+# 1. データセットの読み込み
+df = pd.read_csv("dataset.txt")
 
 # 2. 重回帰モデルの学習
 # 説明変数Xと目的変数y
