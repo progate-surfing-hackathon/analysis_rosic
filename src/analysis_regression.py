@@ -22,10 +22,9 @@ def get_current_date() -> str:
     return jst_now.strftime("%Y-%m-%d")
 
 
-def load_data() -> pd.DataFrame:
+def load_data(db_url) -> pd.DataFrame:
     """MySQLデータベースから集約済みデータを読み込む"""
     load_dotenv()
-    db_url = os.environ["DB_URL"]
     engine = create_engine(db_url)
 
     query = """
@@ -101,9 +100,9 @@ def analyze_user(
     print_results(author, coef, intercept, r2_score, prediction)
 
 
-def main() -> None:
+def main(db_url) -> None:
     """メイン処理"""
-    df = load_data()
+    df = load_data(db_url)
 
     # データベースからすべてのauthor名を取得
     authors: List[str] = df["author"].unique().tolist()
@@ -121,11 +120,12 @@ def main() -> None:
         temp_result = weather_analyzer.get_weather_summary("Tokyo", get_current_date())
         if temp_result:
             print(f"平均気温: {temp_result['temp_avg']:.1f}℃")
+            temp: int = int(temp_result["temp_avg"])
         else:
             print("天気データの取得に失敗しました")
+            continue
 
         # step
-
         result = step_anlyzer.analyze_today()
 
         print(f"今日の曜日: {result['day_type']}")
@@ -133,13 +133,13 @@ def main() -> None:
         print(f"平均歩数: {result['avg_steps']:,}歩")
         print(f"予測歩数: {result['predicted_steps']:,}歩")
 
-        temp: int = temp_result["temp_avg"]
         steps: int = result["predicted_steps"]
         analyze_user(df, author, temp, steps)
 
 
 if __name__ == "__main__":
-    main()
+    db_url = os.environ["DB_URL"]
+    main(db_url)
 
 # データ型
 # author, analysis_date, avg_temp, final_steps, final_money
