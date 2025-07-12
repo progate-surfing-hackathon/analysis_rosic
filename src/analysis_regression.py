@@ -22,10 +22,9 @@ def get_current_date() -> str:
     return jst_now.strftime("%Y-%m-%d")
 
 
-def load_data() -> pd.DataFrame:
+def load_data(db_url) -> pd.DataFrame:
     """MySQLデータベースから集約済みデータを読み込む"""
     load_dotenv()
-    db_url = os.environ["DB_URL"]
     engine = create_engine(db_url)
 
     query = """
@@ -101,9 +100,9 @@ def analyze_user(
     print_results(author, coef, intercept, r2_score, prediction)
 
 
-def main() -> None:
+def main(db_url) -> None:
     """メイン処理"""
-    df = load_data()
+    df = load_data(db_url)
 
     # データベースからすべてのauthor名を取得
     authors: List[str] = df["author"].unique().tolist()
@@ -139,7 +138,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    db_url = os.environ["DB_URL"]
+    main(db_url)
 
 # データ型
 # author, analysis_date, avg_temp, final_steps, final_money
