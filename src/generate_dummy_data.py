@@ -2,22 +2,20 @@ import csv
 import random
 from datetime import datetime, timedelta
 
-from type.step import DayType
-
 
 def generate_dummy_step_data(sample_count: int = 1200):
     """step.py用のダミーデータを生成"""
 
     # 曜日ごとの歩数範囲設定
     step_ranges = {
-        DayType.MONDAY.value: (8000, 12000),
-        DayType.TUESDAY.value: (7500, 11500),
-        DayType.WEDNESDAY.value: (7000, 10000),
-        DayType.THURSDAY.value: (7500, 11000),
-        DayType.FRIDAY.value: (6000, 9000),
-        DayType.SATURDAY.value: (10000, 15000),
-        DayType.SUNDAY.value: (5000, 8000),
-        DayType.HOLIDAY.value: (4000, 7000),
+        "Monday": (8000, 12000),
+        "Tuesday": (7500, 11500),
+        "Wednesday": (7000, 10000),
+        "Thursday": (7500, 11000),
+        "Friday": (6000, 9000),
+        "Saturday": (10000, 15000),
+        "Sunday": (5000, 8000),
+        "holiday": (4000, 7000),
     }
 
     step_day_type = {day: [] for day in step_ranges.keys()}

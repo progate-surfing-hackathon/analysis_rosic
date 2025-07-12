@@ -120,11 +120,12 @@ def main(db_url) -> None:
         temp_result = weather_analyzer.get_weather_summary("Tokyo", get_current_date())
         if temp_result:
             print(f"平均気温: {temp_result['temp_avg']:.1f}℃")
+            temp: int = int(temp_result["temp_avg"])
         else:
             print("天気データの取得に失敗しました")
+            continue
 
         # step
-
         result = step_anlyzer.analyze_today()
 
         print(f"今日の曜日: {result['day_type']}")
@@ -132,7 +133,6 @@ def main(db_url) -> None:
         print(f"平均歩数: {result['avg_steps']:,}歩")
         print(f"予測歩数: {result['predicted_steps']:,}歩")
 
-        temp: int = temp_result["temp_avg"]
         steps: int = result["predicted_steps"]
         analyze_user(df, author, temp, steps)
 
