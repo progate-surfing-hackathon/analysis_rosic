@@ -79,12 +79,6 @@ if __name__ == "__main__":
     
     result = weather.get_weather_summary("Tokyo", "2024-12-15")
     if result:
-        print(f"日付: {result['date']}")
-        print(f"場所: {result['location']}")
         print(f"平均気温: {result['temp_avg']:.1f}℃")
-        print(f"最低気温: {result['temp_min']:.1f}℃")
-        print(f"最高気温: {result['temp_max']:.1f}℃")
-        print(f"湿度: {result['humidity_avg']:.1f}%")
-        print(f"気圧: {result['pressure_avg']:.1f}hPa")
     else:
         print("天気データの取得に失敗しました")
