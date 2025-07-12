@@ -115,7 +115,8 @@ def main() -> None:
 
         weather_analyzer = MeteoWeatherAPI()
         print(type(df))
-        step_anlyzer = StepAnalyzer()
+        author_df = df[df["author"] == author]
+        step_anlyzer = StepAnalyzer(author_df)
 
         temp_result = weather_analyzer.get_weather_summary("Tokyo", get_current_date())
         if temp_result:
