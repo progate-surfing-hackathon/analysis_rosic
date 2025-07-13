@@ -9,11 +9,14 @@ README.md
 README_pay.md
 
 # データファイルや設定例
+analysis_pay.py
 dummy_activity.csv
 dummy_step_data.csv
-analysis_pay.py
 generate_data.py
 generate_dummy_data.py
-insert_dummy_daata.py
+insert_dummy_data.py
 show_table.py
 .env
+.env.example
+.venv
+.samignore
