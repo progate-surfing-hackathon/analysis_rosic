@@ -76,7 +76,7 @@ def get_user_data(db_url) -> pd.DataFrame:
     return pd.read_sql(query, engine)
 
 
-def save_over_border(db_url, user_id: str, amount: int, notification_token: str) -> None:
+def save_over_border(db_url:str, user_id: str, amount: int, notification_token: str) -> None:
     """閾値超過データをover_bordersテーブルに保存"""
     engine = create_engine(db_url)
     query = "INSERT INTO over_borders (user_id, amount, notification_token) VALUES (%s, %s, %s)"
@@ -130,7 +130,7 @@ def main() -> None:
         
 
 
-        temp_result = weather_analyzer.get_weather_summary("Tokyo", get_current_date())
+        temp_result:dict = weather_analyzer.get_weather_summary("Tokyo", get_current_date())
         if temp_result:
             print(f"平均気温: {temp_result['temp_avg']:.1f}℃")
         else:
@@ -138,7 +138,7 @@ def main() -> None:
         
         # step
         
-        result = step_anlyzer.analyze_today()
+        result:dict = step_anlyzer.analyze_today()
         
         print(f"今日の曜日: {result['day_type']}")
         print(f"過去データ数: {result['count']}件")
