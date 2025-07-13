@@ -76,12 +76,13 @@ def get_user_data(db_url) -> pd.DataFrame:
     return pd.read_sql(query, engine)
 
 
-def save_over_border(db_url:str, user_id: str, amount: int, notification_token: str) -> None:
+def save_over_border(db_url:str, notification_token: str) -> None:
     """閾値超過データをover_bordersテーブルに保存"""
     engine = create_engine(db_url)
-    query = "INSERT INTO over_borders (user_id, amount, notification_token) VALUES (%s, %s, %s)"
+    query = "INSERT INTO over_borders (notification_token) VALUES (%s)"
+    
     with engine.connect() as conn:
-        conn.execute(query, (user_id, amount, notification_token))
+        conn.execute(query, (notification_token))
         conn.commit()
 
 
@@ -164,11 +165,12 @@ def main() -> None:
             border = user_info.iloc[0]['border']
             notification_token = user_info.iloc[0]['notification_token']
             if prediction > border:
-                engine = create_engine(db_url)
-                query = "INSERT INTO over_borders (notification_token) VALUES (%s)"
-                with engine.connect() as conn:
-                    conn.execute(query, (notification_token,))
-                    conn.commit()
+                # engine = create_engine(db_url)
+                # query = "INSERT INTO over_borders (notification_token) VALUES (%s)"
+                # with engine.connect() as conn:
+                #     conn.execute(query, (notification_token,))
+                #     conn.commit()
+                save_over_border(db_url, notification_token)
                 print(f"閾値超過: {author} - 予測額{prediction}円 > 閾値{border}円")
     
 
