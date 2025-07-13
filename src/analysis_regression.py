@@ -58,8 +58,8 @@ def train_model(daily_df: pd.DataFrame) -> Tuple[LinearRegression, pd.DataFrame,
 def evaluate_model(model: LinearRegression, X: pd.DataFrame, y: pd.Series) -> Tuple[np.ndarray, float, float]:
     """モデルを評価し、結果を返す"""
     coef = model.coef_
-    intercept = model.intercept_
-    r2_score = model.score(X, y)
+    intercept = float(model.intercept_)
+    r2_score = float(model.score(X, y))
     return coef, intercept, r2_score
 
 
