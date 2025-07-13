@@ -36,6 +36,7 @@ authors_to_add = [
 # DataFrame用のデータリストを作成 (辞書のリスト)
 data_for_df = [
     {
+        "id": str(uuid.uuid4()),  # 各authorにユニークなIDを生成
         "author": author,
         "notification_token": str(uuid.uuid4()),  # 各authorにユニークなtokenを生成
     }
